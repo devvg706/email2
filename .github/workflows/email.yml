@@ -10,12 +10,14 @@ jobs:
      steps:
          - name: "checkout code"
            uses: actions/checkout@v2
+
+
          - name: 'setup pyhon env'
            uses: actions/setup-python@v2
            with:
             python-version: '3.9'
             
-
+        #this step install pip command in our github runner machine so that it can install any dependencies
          - name: 'install dependencies'
            run: |
             python -m pip install --upgrade pip
@@ -26,14 +28,14 @@ jobs:
            run: python email.py
            env:
             workflow_name: ${{github.workflow}}
-            senders_email: ${{ secrets.SENDERS_EMAIL }}
-            recievers_email: ${{ secrets.RECIEVERS_EMAIL }}
+            senders_email: ${{ secrets.SENDERS_EMAIL }} #This variable retrieves the sender's email address from the repository's secrets. It is used to keep sensitive information secure.
+            recievers_email: ${{ secrets.RECIEVERS_EMAIL }} #This variable holds the sender's email password, also retrieved from the repository's secrets for security purposes.
             senders_password: ${{ secrets.SENDERS_PASSWORD }}
             repo_name: ${{ github.repository }}
             workflow_run-id: ${{ github.run_id }}
 
 
 
-
+#in this env variables are stored in github 
 
 
