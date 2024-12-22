@@ -1,0 +1,38 @@
+name: 'sending email when workflow fails'
+
+on:
+    workflow_dispatch:
+
+
+jobs:
+  send_email:
+     runs-on: ubuntu-latest
+     steps:
+         - name: "checkout code"
+           uses: actions/checkout@v2
+         - name: 'setup pyhon env'
+           uses: actions/setup-python@v2
+           with:
+            python_version: '3.9'
+
+         - name: 'install dependencies'
+           run: |
+            python -m pip install --upgrade pip
+            pip install smtplib email
+
+
+         - name: 'send email'
+           run: python email.py
+           env:
+            workflow_name: ${{ github.workflow_name }}
+            senders_email: ${{ secrets.SENDERS_EMAIL }}
+            recievers_email: ${{ secrets.RECIEVERS_EMAIL }}
+            senders_password: ${{ secrets.SENDERS_PASSWORD }}
+            repo_name: ${{ github.repository }}
+            workflow_run-id: ${{ github.run_id }}
+
+
+
+
+
+
